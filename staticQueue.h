@@ -42,7 +42,7 @@ void staticQueue<T>::push(T value)
         return;
     }
     holder[m_tail++] = value;
-    m_tail %= default_queue_size - 1; // mod is applied to keep tail between 0 and default_queue_size-1;
+    m_tail %= default_queue_size; // mod is applied to keep tail between 0 and default_queue_size-1;
     ++m_size;
 }
 
@@ -55,7 +55,7 @@ void staticQueue<T>::pop()
         return;
     }
     ++m_head;
-    m_head %= default_queue_size - 1;
+    m_head %= default_queue_size;
     --m_size;
     
 }
