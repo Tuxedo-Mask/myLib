@@ -16,15 +16,17 @@ class staticList
 public:    
     staticList();
     void push_front(T value);
-    void insert(T value, int pos);
-    T front();
-    bool empty();
-    int size();
-    void print();
+    bool insert(T value, int pos);
+    T front() const;
+    bool empty() const;
+    int size() const;
+    void print() const;
 private:
     T holder[default_list_size];
     int next[default_list_size];
+    int prev[default_list_size];
     int m_head;
+    int m_tail;
     int m_size;
     staticQueue<int> m_free_pos_queue;
     int free_pos();
@@ -32,12 +34,13 @@ private:
 
 template <typename T>
 staticList<T>::staticList()
-                           : m_head(-1)
+                           : m_head(0)
+                           , m_tail(0)
                            , m_size(0)
 {
     for(int i = 0; i < default_list_size; ++i) {
         m_free_pos_queue.push(i);
-        next[i] = -1;
+        next[i] = prev[i] = i;
     }
 }
 
@@ -57,7 +60,7 @@ int staticList<T>::free_pos()
 
 // Inserts after pos
 template <typename T>
-void staticList<T>::insert(T value, int pos){
+bool staticList<T>::insert(T value, int pos){
     assert(this->size() <= default_list_size);
     assert(this->size() >= 0);
     if (size() == default_list_size) {
@@ -90,32 +93,37 @@ void staticList<T>::push_front(T value)
 
     if (-1 != fp) {
         holder[fp] = value;
-        if(!this->empty()) {
-            next[fp] = m_head;
-        }
+        next[fp] = m_head;
+        prev[m_head] = fp;
         m_head = fp;
         ++m_size;
     }
 }
 
 template <typename T>
-void staticList<T>::print()
+void staticList<T>::print() const
 {
-    int n = m_head;
-    while(n != -1) {
+    if (!empty()) {
+//        for(int n = m_head; n = next[n]) {
+//        }
+        int n = m_head;
         std::cout << "HH::n = " << holder[n] << std::endl;
-        n = next[n];
+        while(n != next[n])
+        {
+            n = next[n];
+            std::cout << "HH::n = " << holder[n] << std::endl;
+        }
     }
 }
 
 template <typename T>
-int staticList<T>::size()
+int staticList<T>::size() const
 {
     return m_size;
 }
 
 template <typename T>
-bool staticList<T>::empty()
+bool staticList<T>::empty() const
 {
     return !m_size;
 }
