@@ -16,11 +16,13 @@ class staticList
 public:    
     staticList();
     void push_front(T value);
+    void push_back(T value);
     bool insert(T value, int pos);
     T front() const;
     bool empty() const;
     int size() const;
     void print() const;
+    void back_print() const;
 private:
     T holder[default_list_size];
     int next[default_list_size];
@@ -73,10 +75,6 @@ bool staticList<T>::insert(T value, int pos){
     int fp = free_pos();
 
     if (-1 != fp) {
-        holder[fp] = value;
-        next[fp] = next[pos];
-        next[pos] = fp;
-        ++m_size;
     }
 }
 
@@ -101,18 +99,46 @@ void staticList<T>::push_front(T value)
 }
 
 template <typename T>
+void staticList<T>::push_back(T value)
+{
+    assert(this->size() <= default_list_size);
+    assert(this->size() >= 0);
+    if (size() == default_list_size) {
+        return;
+    }
+
+    int fp = free_pos();
+
+    if (-1 != fp) {
+        holder[fp] = value;
+        next[m_tail] = fp;
+        prev[fp] = m_tail;
+        m_tail = fp;
+        ++m_size;
+    }
+}
+
+template <typename T>
 void staticList<T>::print() const
 {
     if (!empty()) {
-//        for(int n = m_head; n = next[n]) {
-//        }
         int n = m_head;
-        std::cout << "HH::n = " << holder[n] << std::endl;
-        while(n != next[n])
-        {
-            n = next[n];
+        for(; n != next[n]; n = next[n]) {
             std::cout << "HH::n = " << holder[n] << std::endl;
         }
+        std::cout << "HH::n = " << holder[n] << std::endl;
+    }
+}
+
+template <typename T>
+void staticList<T>::back_print() const
+{
+    if (!empty()) {
+        int n = m_tail;
+        for(; n != prev[n]; n = prev[n]) {
+            std::cout << "HH::n = " << holder[n] << std::endl;
+        }
+        std::cout << "HH::n = " << holder[n] << std::endl;
     }
 }
 
