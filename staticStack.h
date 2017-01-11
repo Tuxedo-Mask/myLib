@@ -8,7 +8,7 @@
 namespace myLib
 {
 const int default_stack_size = 100; // Used for staticStack
-template <typename T>
+template <typename T, int stack_size = default_stack_size>
 class staticStack
 {
 public:    
@@ -18,51 +18,46 @@ public:
     T top();
     bool empty();
 private:
-    T holder[default_stack_size];
-    int head;
+    T holder[stack_size];
+    int m_head;
 };
 
-template <typename T>
-staticStack<T>::staticStack() : head(-1)
+template <typename T, int stack_size>
+staticStack<T, stack_size>::staticStack() : m_head(-1)
 {
 }
 
-template <typename T>
-void staticStack<T>::push(T value)
+template <typename T, int stack_size>
+void staticStack<T, stack_size>::push(T value)
 {
-    assert(head < default_stack_size);
-    if (head == default_stack_size - 1) {
-        std::cout << "stack is full, could not push." << value << std::endl;
-    } else {
-        holder[++head] = value;
+    assert(m_head < stack_size);
+    if (m_head != stack_size - 1) {
+        holder[++m_head] = value;
     }
 }
 
-template <typename T>
-void staticStack<T>::pop()
+template <typename T, int stack_size>
+void staticStack<T, stack_size>::pop()
 {
-    if (this->empty()) {
-        std::cout << "stack is empty, could not pop." << std::endl;
-    } else {
-        --head;
+    if (!this->empty()) {
+        --m_head;
     }
 }
 
-template <typename T>
-T staticStack<T>::top()
+template <typename T, int stack_size>
+T staticStack<T, stack_size>::top()
 {
-    assert(head >= -1 && head < default_stack_size);
+    assert(m_head >= -1 && m_head < stack_size);
     if (this->empty()) {
-        std::cout << "stack is empty, default value is returned as danger number" << std::endl;
         return T();
     }
-    return holder[head];
+    return holder[m_head];
 }
 
-template <typename T>
-bool staticStack<T>::empty()
+template <typename T, int stack_size>
+bool staticStack<T, stack_size>::empty()
 {
-    return head == -1;
+    return m_head == -1;
 }
 }
 

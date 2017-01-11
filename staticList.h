@@ -10,7 +10,7 @@
 namespace myLib
 {
 const int default_list_size = 100; // Used for staticList
-template <typename T>
+template <typename T, int list_size = default_list_size>
 class staticList
 {
 public:    
@@ -24,51 +24,51 @@ public:
     void print() const;
     void back_print() const;
 private:
-    T holder[default_list_size];
-    int next[default_list_size];
-    int prev[default_list_size];
+    T holder[list_size];
+    int next[list_size];
+    int prev[list_size];
     int m_head;
     int m_tail;
     int m_size;
-    staticQueue<int> m_free_pos_queue;
+    staticQueue<int, list_size> m_free_pos_queue;
     int free_pos();
 };
 
-template <typename T>
-staticList<T>::staticList()
+template <typename T, int list_size>
+staticList<T, list_size>::staticList()
                            : m_head(0)
                            , m_tail(0)
                            , m_size(0)
 {
-    for(int i = 0; i < default_list_size; ++i) {
+    for(int i = 0; i < list_size; ++i) {
         m_free_pos_queue.push(i);
         next[i] = prev[i] = i;
     }
 }
 
-template <typename T>
-int staticList<T>::free_pos()
+template <typename T, int list_size>
+int staticList<T, list_size>::free_pos()
 {
-    assert(this->size() == default_list_size - m_free_pos_queue.size());
-    if (this->size() == default_list_size) {
+    assert(this->size() == list_size - m_free_pos_queue.size());
+    if (this->size() == list_size) {
         return -1;
     }
     int pos = m_free_pos_queue.front();
     m_free_pos_queue.pop();
-    assert(0 <= pos && default_list_size > pos);
+    assert(0 <= pos && list_size > pos);
 
     return pos;
 }
 
 // Inserts after pos
-template <typename T>
-bool staticList<T>::insert(T value, int pos){
-    assert(this->size() <= default_list_size);
+template <typename T, int list_size>
+bool staticList<T, list_size>::insert(T value, int pos){
+    assert(this->size() <= list_size);
     assert(this->size() >= 0);
-    if (size() == default_list_size) {
+    if (size() == list_size) {
         return;
     }
-    if (pos < 0 || pos > default_list_size - 1) {
+    if (pos < 0 || pos > list_size - 1) {
         return;
     }
 
@@ -78,12 +78,12 @@ bool staticList<T>::insert(T value, int pos){
     }
 }
 
-template <typename T>
-void staticList<T>::push_front(T value)
+template <typename T, int list_size>
+void staticList<T, list_size>::push_front(T value)
 {
-    assert(this->size() <= default_list_size);
+    assert(this->size() <= list_size);
     assert(this->size() >= 0);
-    if (size() == default_list_size) {
+    if (size() == list_size) {
         return;
     }
 
@@ -98,12 +98,12 @@ void staticList<T>::push_front(T value)
     }
 }
 
-template <typename T>
-void staticList<T>::push_back(T value)
+template <typename T, int list_size>
+void staticList<T, list_size>::push_back(T value)
 {
-    assert(this->size() <= default_list_size);
+    assert(this->size() <= list_size);
     assert(this->size() >= 0);
-    if (size() == default_list_size) {
+    if (size() == list_size) {
         return;
     }
 
@@ -118,8 +118,8 @@ void staticList<T>::push_back(T value)
     }
 }
 
-template <typename T>
-void staticList<T>::print() const
+template <typename T, int list_size>
+void staticList<T, list_size>::print() const
 {
     if (!empty()) {
         int n = m_head;
@@ -130,8 +130,8 @@ void staticList<T>::print() const
     }
 }
 
-template <typename T>
-void staticList<T>::back_print() const
+template <typename T, int list_size>
+void staticList<T, list_size>::back_print() const
 {
     if (!empty()) {
         int n = m_tail;
@@ -142,14 +142,14 @@ void staticList<T>::back_print() const
     }
 }
 
-template <typename T>
-int staticList<T>::size() const
+template <typename T, int list_size>
+int staticList<T, list_size>::size() const
 {
     return m_size;
 }
 
-template <typename T>
-bool staticList<T>::empty() const
+template <typename T, int list_size>
+bool staticList<T, list_size>::empty() const
 {
     return !m_size;
 }
