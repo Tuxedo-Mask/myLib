@@ -20,6 +20,7 @@ int main()
     } else {
         std::cout << "cp_array is not equal to a" << std::endl;
     }
+
     myLib::print(a, array_size);
 
     return 0;
