@@ -1,4 +1,7 @@
 #include "merge_sort.h"
+#include "insertion_sort.h"
+#include "quick_sort.h"
+#include "bubble_sort.h"
 #include "utils.h"
 #include <algorithm>
 
@@ -9,17 +12,11 @@ int main()
 
     myLib::random_fill(a, array_size, 100);
 
-    myLib::merge_sort(a, 0, array_size - 1, array_size);
-
     myLib::print(a, array_size);
-    for (int j = 0; j < 1000; ++j) {
-        int i = myLib::binary_search<int>(a, array_size, j, myLib::greater_or_equal);
-        if (-1 != i){
-            std::cout << "i == " << i << " a[i] = " << a[i] << std::endl;
-        }
-    }
 
 
+    myLib::quick_sort(a, 0, array_size - 1, array_size);
+    myLib::print(a, array_size);
 
     return 0;
 }

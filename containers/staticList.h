@@ -83,7 +83,8 @@ void staticList<T, list_size>::push_front(T value)
 {
     assert(this->size() <= list_size);
     assert(this->size() >= 0);
-    if (size() == list_size) {
+
+    if (this->size() == list_size) {
         return;
     }
 
@@ -91,9 +92,14 @@ void staticList<T, list_size>::push_front(T value)
 
     if (-1 != fp) {
         holder[fp] = value;
-        next[fp] = m_head;
-        prev[m_head] = fp;
-        m_head = fp;
+
+        if (this->empty()) {
+            m_head = m_tail = next[fp] = prev[fp] = fp;
+        } else {
+            next[fp] = m_head;
+            prev[m_head] = fp;
+            m_head = fp;
+        }
         ++m_size;
     }
 }
