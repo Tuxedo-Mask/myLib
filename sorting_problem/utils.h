@@ -2,6 +2,9 @@
 #define UTILS_H
 
 #include <unistd.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
 
 namespace myLib
 {

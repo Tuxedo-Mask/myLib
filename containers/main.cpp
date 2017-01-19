@@ -1,11 +1,14 @@
-#include "staticList.h"
+#include "staticHeap.h"
 
 int main()
 {
-    myLib::staticList<int> l;
-    l.push_front(0);
-    l.push_front(1);
-    l.push_front(2);
-    l.back_print();
+    myLib::staticHeap sh;
+    sh.insert(1);
+    sh.insert(2);
+    sh.insert(3);
+    sh.insert(4);
+    sh.insert(5);
+    sh.remove(0);
+    sh.print();
     return 0;
 }

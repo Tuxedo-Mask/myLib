@@ -3,7 +3,6 @@
 #include "quick_sort.h"
 #include "bubble_sort.h"
 #include "utils.h"
-#include <algorithm>
 
 int main()
 {
