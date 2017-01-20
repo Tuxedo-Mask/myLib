@@ -10,12 +10,18 @@ class staticHeap
 {
 public :
     staticHeap();
+    staticHeap(
+                int array[]
+              , int array_size
+              );
+    void buildHeap();
     void insert(int value);
-    void remove(int node_pos);
+    void extract();
     bool empty() const;
     bool full() const;
     void print() const;
 private:
+    void remove(int node_pos);
     void siftUp(int node_pos);
     void siftDown(int node_pos);
     int siftDownPos(int node_pos);
@@ -31,15 +37,37 @@ staticHeap::staticHeap() : m_size(0)
 {
 }
 
+staticHeap::staticHeap(
+                        int array[]
+                      , int array_size
+                      )
+                      : m_size(array_size)
+{
+    copy(m_holder, array, m_size);
+    buildHeap();
+}
+
+void staticHeap::buildHeap()
+{
+    for(int i = m_size / 2 - 1; i >= 0; --i) {
+        siftDown(i);
+    }
+}
+
 void staticHeap::insert(int value)
 {
-    if (this->full()) {
+    if (full()) {
         return;
     }
 
     int node_pos = m_size++;
     m_holder[node_pos] = value;
     siftUp(node_pos);
+}
+
+void staticHeap::extract()
+{
+    remove(root());
 }
 
 void staticHeap::siftUp(int node_pos)
@@ -52,18 +80,21 @@ void staticHeap::siftUp(int node_pos)
 
 void staticHeap::remove(int node_pos)
 {
-    if(this->empty()) {
+    if(empty()) {
         return;
     }
-    swap(m_holder[m_size-- - 1], m_holder[node_pos]);
+    swap(m_holder[m_size - 1], m_holder[node_pos]);
+    --m_size;
     siftDown(node_pos);
 }
 
 void staticHeap::siftDown(int node_pos)
 {
-    while (node_pos != siftDownPos(node_pos)) {
-        swap(m_holder[node_pos], m_holder[siftDownPos(node_pos)]);
-        node_pos = siftDownPos(node_pos);
+    int sdp = siftDownPos(node_pos);
+    while (node_pos != sdp) {
+        swap(m_holder[node_pos], m_holder[sdp]);
+        node_pos = sdp;
+        sdp = siftDownPos(node_pos);
     }
 }
 
@@ -76,7 +107,7 @@ int staticHeap::siftDownPos(int node_pos)
         max = l;
     }
     int r = right(node_pos);
-    if (-1 == r && m_holder[r] > m_holder[max]) {
+    if (-1 != r && m_holder[r] > m_holder[max]) {
         max = r;
     }
     return max;
@@ -94,36 +125,25 @@ bool staticHeap::full() const
 void staticHeap::print() const
 {
     for (int i = 0; i < m_size; ++i) {
-        std::cout << "m_holder[ " << i << "] = " <<  m_holder[i] << std::endl;
+        std::cout << "m_holder[" << i << "] = " <<  m_holder[i] << std::endl;
     }
 }
 
 int staticHeap::left(int node_pos) const
 {
-    int l = ((node_pos + 1) * 2) - 1;
-    if (l < m_size) {
-        return l;
-    } else {
-        return -1;
-    }
+    int l = 2 * node_pos + 1;
+    return l < m_size ? l : -1;
 }
 
 int staticHeap::right(int node_pos) const
 {
-    int r = (node_pos + 1) * 2;
-    if (r < m_size) {
-        return r;
-    } else {
-        return -1;
-    }
+    int r = 2 * node_pos + 2;
+    return r < m_size ? r : -1;
 }
 
 int staticHeap::parent(int node_pos) const
 {
-    if (root() == node_pos) {
-        return root();
-    }
-    return ((node_pos + 1) / 2) - 1;
+    return root() == node_pos ? root() : ((node_pos + 1) / 2) - 1;
 }
 
 int staticHeap::root() const

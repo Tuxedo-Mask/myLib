@@ -1,14 +1,11 @@
 #include "staticHeap.h"
 
+const int array_size = 10;
+
 int main()
 {
-    myLib::staticHeap sh;
-    sh.insert(1);
-    sh.insert(2);
-    sh.insert(3);
-    sh.insert(4);
-    sh.insert(5);
-    sh.remove(0);
+    int array[] = {4, 1, 3, 2, 16, 9, 10, 14, 8, 7};
+    myLib::staticHeap sh(array, array_size);
     sh.print();
     return 0;
 }

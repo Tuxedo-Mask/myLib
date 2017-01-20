@@ -25,13 +25,21 @@ void copy(
 
 // 3
 template <typename T>
+void copy(
+           T dest_array[]
+         , T from_array[]
+         , int array_size
+         );
+
+// 4
+template <typename T>
 bool equal(
             std::vector<T>& dest
           , T array[]
           , int array_size
           );
 
-// 4
+// 5
 template <typename T>
 void random_fill(
                   T array[]
@@ -39,7 +47,7 @@ void random_fill(
                 , int restriction
                 );
 
-// 5
+// 6
 template <typename T1>
 int binary_search(
                    T1 array[]
@@ -48,7 +56,7 @@ int binary_search(
                  , bool (* predicate)(int, int)
                  );
 
-// 6
+// 7
 template <typename T1>
 int binary_search_helper(
                           T1 sorted_array[]
@@ -58,16 +66,22 @@ int binary_search_helper(
                         , bool (* predicate)(int, int)
                         );
 
-// 7
+// 8
 template <typename T>
 bool greater_or_equal (T left, T right);
-
-// 8
-void sleep(int seconds);
 
 // 9
 template <typename T>
 void swap(T& left, T& right);
+
+// 10
+void sleep(int seconds);
+
+// 11
+void space(int how_many);
+
+// 12
+void message(std::string msg);
 
 // 1
 template <typename T>
@@ -99,6 +113,19 @@ void copy(
 
 // 3
 template <typename T>
+void copy(
+           T dest_array[]
+         , T from_array[]
+         , int array_size
+         )
+{
+    for (int i = 0; i < array_size; ++i) {
+        dest_array[i] = from_array[i];
+    }
+}
+
+// 4
+template <typename T>
 bool equal(
             std::vector<T>& dest
           , T array[]
@@ -113,7 +140,7 @@ bool equal(
     return true;
 }
 
-// 4
+// 5
 template <typename T>
 void random_fill(
                   T array[]
@@ -126,7 +153,7 @@ void random_fill(
     }
 }
 
-// 5
+// 6
 template <typename T1>
 int binary_search(
                    T1 sorted_array[]
@@ -142,7 +169,7 @@ int binary_search(
     return sorted_array[i] == number ? i : -1;
 }
 
-// 6
+// 7
 template <typename T1>
 int binary_search_helper(
                           T1 sorted_array[]
@@ -166,18 +193,11 @@ int binary_search_helper(
     return right;
 }
 
-// 7
+// 8
 template <typename T>
 bool greater_or_equal (T left, T right)
 {
     return left >= right ? true : false; 
-}
-
-// 8
-unsigned int microseconds  = 1000000;
-void sleep(int seconds)
-{
-    usleep(microseconds * seconds);
 }
 
 // 9
@@ -187,6 +207,27 @@ void swap(T& left, T& right)
     T buff = left;
     left = right;
     right = buff;
+}
+
+// 10
+unsigned int microseconds  = 1000000;
+void sleep(int seconds)
+{
+    usleep(microseconds * seconds);
+}
+
+// 11
+void space(int how_many)
+{
+    for (int i = 0; i < how_many; ++i) {
+        std::cout << std::endl;
+    }
+}
+
+// 12
+void message(std::string msg)
+{
+    std::cout << msg << std::endl;
 }
 
 }
