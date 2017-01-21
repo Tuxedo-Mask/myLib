@@ -6,16 +6,18 @@
 namespace myLib
 {
 const int default_heap_size = 100;
+
+template <typename T, int heap_size = default_heap_size>
 class staticHeap
 {
 public :
     staticHeap();
     staticHeap(
-                int array[]
+                T array[]
               , int array_size
               );
     void buildHeap();
-    void insert(int value);
+    void insert(T value);
     void extract();
     bool empty() const;
     bool full() const;
@@ -29,16 +31,18 @@ private:
     int parent(int node_pos) const;
     int left(int node_pos) const;
     int right(int node_pos) const;
-    int m_holder[default_heap_size];
+    T m_holder[heap_size];
     int m_size;
 };
 
-staticHeap::staticHeap() : m_size(0)
+template <typename T, int heap_size>
+staticHeap<T, heap_size>::staticHeap() : m_size(0)
 {
 }
 
-staticHeap::staticHeap(
-                        int array[]
+template <typename T, int heap_size>
+staticHeap<T, heap_size>::staticHeap(
+                        T array[]
                       , int array_size
                       )
                       : m_size(array_size)
@@ -47,14 +51,16 @@ staticHeap::staticHeap(
     buildHeap();
 }
 
-void staticHeap::buildHeap()
+template <typename T, int heap_size>
+void staticHeap<T, heap_size>::buildHeap()
 {
     for(int i = m_size / 2 - 1; i >= 0; --i) {
         siftDown(i);
     }
 }
 
-void staticHeap::insert(int value)
+template <typename T, int heap_size>
+void staticHeap<T, heap_size>::insert(T value)
 {
     if (full()) {
         return;
@@ -65,12 +71,14 @@ void staticHeap::insert(int value)
     siftUp(node_pos);
 }
 
-void staticHeap::extract()
+template <typename T, int heap_size>
+void staticHeap<T, heap_size>::extract()
 {
     remove(root());
 }
 
-void staticHeap::siftUp(int node_pos)
+template <typename T, int heap_size>
+void staticHeap<T, heap_size>::siftUp(int node_pos)
 {
     while(m_holder[node_pos] >m_holder[parent(node_pos)]) {
         swap(m_holder[node_pos], m_holder[parent(node_pos)]);
@@ -78,7 +86,8 @@ void staticHeap::siftUp(int node_pos)
     }
 }
 
-void staticHeap::remove(int node_pos)
+template <typename T, int heap_size>
+void staticHeap<T, heap_size>::remove(int node_pos)
 {
     if(empty()) {
         return;
@@ -88,7 +97,8 @@ void staticHeap::remove(int node_pos)
     siftDown(node_pos);
 }
 
-void staticHeap::siftDown(int node_pos)
+template <typename T, int heap_size>
+void staticHeap<T, heap_size>::siftDown(int node_pos)
 {
     int sdp = siftDownPos(node_pos);
     while (node_pos != sdp) {
@@ -98,7 +108,8 @@ void staticHeap::siftDown(int node_pos)
     }
 }
 
-int staticHeap::siftDownPos(int node_pos)
+template <typename T, int heap_size>
+int staticHeap<T, heap_size>::siftDownPos(int node_pos)
 {
     int max = node_pos;
 
@@ -113,40 +124,48 @@ int staticHeap::siftDownPos(int node_pos)
     return max;
 }
 
-bool staticHeap::empty() const
+template <typename T, int heap_size>
+bool staticHeap<T, heap_size>::empty() const
 {
     return 0 == m_size;
 }
 
-bool staticHeap::full() const
+template <typename T, int heap_size>
+bool staticHeap<T, heap_size>::full() const
 {
-    return default_heap_size == m_size;
+    return heap_size == m_size;
 }
-void staticHeap::print() const
+
+template <typename T, int heap_size>
+void staticHeap<T, heap_size>::print() const
 {
     for (int i = 0; i < m_size; ++i) {
         std::cout << "m_holder[" << i << "] = " <<  m_holder[i] << std::endl;
     }
 }
 
-int staticHeap::left(int node_pos) const
+template <typename T, int heap_size>
+int staticHeap<T, heap_size>::left(int node_pos) const
 {
     int l = 2 * node_pos + 1;
     return l < m_size ? l : -1;
 }
 
-int staticHeap::right(int node_pos) const
+template <typename T, int heap_size>
+int staticHeap<T, heap_size>::right(int node_pos) const
 {
     int r = 2 * node_pos + 2;
     return r < m_size ? r : -1;
 }
 
-int staticHeap::parent(int node_pos) const
+template <typename T, int heap_size>
+int staticHeap<T, heap_size>::parent(int node_pos) const
 {
     return root() == node_pos ? root() : ((node_pos + 1) / 2) - 1;
 }
 
-int staticHeap::root() const
+template <typename T, int heap_size>
+int staticHeap<T, heap_size>::root() const
 {
     return 0;
 }

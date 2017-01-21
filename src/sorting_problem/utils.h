@@ -6,13 +6,15 @@
 #include <vector>
 #include <algorithm>
 
+typedef unsigned int size_t;
+
 namespace myLib
 {
 // 1
 template <typename T>
 void print(
             T array[]
-          , int array_size
+          , size_t array_size
           );
 
 // 2
@@ -20,7 +22,7 @@ template <typename T>
 void copy(
            std::vector<T>& dest
          , T array[]
-         , int array_size
+         , size_t array_size
          );
 
 // 3
@@ -28,7 +30,7 @@ template <typename T>
 void copy(
            T dest_array[]
          , T from_array[]
-         , int array_size
+         , size_t array_size
          );
 
 // 4
@@ -36,34 +38,34 @@ template <typename T>
 bool equal(
             std::vector<T>& dest
           , T array[]
-          , int array_size
+          , size_t array_size
           );
 
 // 5
 template <typename T>
 void random_fill(
                   T array[]
-                , int array_size
-                , int restriction
+                , size_t array_size
+                , size_t restriction
                 );
 
-// 6
-template <typename T1>
+// 6 TODO need more investigation in case of bugs
+template <typename T>
 int binary_search(
-                   T1 array[]
-                 , int array_size
-                 , int number
-                 , bool (* predicate)(int, int)
+                   T array[]
+                 , size_t array_size
+                 , T number
+                 , bool (* predicate)(T, T)
                  );
 
 // 7
-template <typename T1>
-int binary_search_helper(
-                          T1 sorted_array[]
-                        , int number
-                        , int left
-                        , int right
-                        , bool (* predicate)(int, int)
+template <typename T>
+size_t binary_search_helper(
+                          T sorted_array[]
+                        , T number
+                        , size_t left
+                        , size_t right
+                        , bool (* predicate)(T, T)
                         );
 
 // 8
@@ -78,7 +80,7 @@ void swap(T& left, T& right);
 void sleep(int seconds);
 
 // 11
-void space(int how_many);
+void space(size_t how_many);
 
 // 12
 void message(std::string msg);
@@ -87,10 +89,10 @@ void message(std::string msg);
 template <typename T>
 void print(
             T array[]
-          , int array_size
+          , size_t array_size
           )
 {
-    for (int i = 0; i < array_size; ++i) {
+    for (size_t i = 0; i < array_size; ++i) {
         std::cout << "array [" << i << "] == " << array[i] << std::endl;
     }
 
@@ -102,11 +104,11 @@ template <typename T>
 void copy(
            std::vector<T>& dest
          , T array[]
-         , int array_size
+         , size_t array_size
          )
 {
     assert(array_size <= dest.size());
-    for (int i = 0; i < array_size; ++i) {
+    for (size_t i = 0; i < array_size; ++i) {
         dest[i] = array[i];
     }
 }
@@ -116,10 +118,10 @@ template <typename T>
 void copy(
            T dest_array[]
          , T from_array[]
-         , int array_size
+         , size_t array_size
          )
 {
-    for (int i = 0; i < array_size; ++i) {
+    for (size_t i = 0; i < array_size; ++i) {
         dest_array[i] = from_array[i];
     }
 }
@@ -129,10 +131,10 @@ template <typename T>
 bool equal(
             std::vector<T>& dest
           , T array[]
-          , int array_size
+          , size_t array_size
           )
 {
-    for (int i = 0; i < array_size; ++i) {
+    for (size_t i = 0; i < array_size; ++i) {
         if(dest[i] != array[i]) {
             return false;
         }
@@ -144,22 +146,22 @@ bool equal(
 template <typename T>
 void random_fill(
                   T array[]
-                , int array_size
-                , int restriction
+                , size_t array_size
+                , size_t restriction
                 )
 {
-    for (int i = 0; i < array_size; ++i) {
+    for (size_t i = 0; i < array_size; ++i) {
         array[i] = std::rand() % restriction;
     }
 }
 
 // 6
-template <typename T1>
+template <typename T>
 int binary_search(
-                   T1 sorted_array[]
-                 , int array_size
-                 , int number
-                 , bool (* predicate)(int, int)
+                   T sorted_array[]
+                 , size_t array_size
+                 , T number
+                 , bool (* predicate)(T, T)
                  )
 {
     int i =  binary_search_helper(sorted_array, number, 0, array_size - 1, predicate);
@@ -170,10 +172,10 @@ int binary_search(
 }
 
 // 7
-template <typename T1>
+template <typename T>
 int binary_search_helper(
-                          T1 sorted_array[]
-                        , int number
+                          T sorted_array[]
+                        , T number
                         , int left
                         , int right
                         , bool (* predicate)(int, int)
@@ -181,9 +183,6 @@ int binary_search_helper(
 {
     while (right - left > 1 ) {
         int middle = (right + left) / 2;
-        // std::cout << "left = " << left << " right = " << right << std::endl;
-        // std::cout << "middle = " << middle << " sorted_array[middle] " << sorted_array[middle]<< std::endl;
-        // sleep(1);
         if (predicate(number, sorted_array[middle]) ) {
             left = middle;
         } else {
@@ -210,16 +209,16 @@ void swap(T& left, T& right)
 }
 
 // 10
-unsigned int microseconds  = 1000000;
+unsigned int microseconds  = 100000;
 void sleep(int seconds)
 {
-    usleep(microseconds * seconds);
+    usleep(seconds * microseconds);
 }
 
 // 11
-void space(int how_many)
+void space(size_t how_many)
 {
-    for (int i = 0; i < how_many; ++i) {
+    for (size_t i = 0; i < how_many; ++i) {
         std::cout << std::endl;
     }
 }
