@@ -70,19 +70,23 @@ size_t binary_search_helper(
 
 // 8
 template <typename T>
-bool greater_or_equal (T left, T right);
+bool greate_or_equal (T left, T right);
 
 // 9
 template <typename T>
-void swap(T& left, T& right);
+bool less_or_equal (T left, T right);
 
 // 10
-void sleep(int seconds);
+template <typename T>
+void swap(T& left, T& right);
 
 // 11
-void space(size_t how_many);
+void sleep(int seconds);
 
 // 12
+void space(size_t how_many);
+
+// 13
 void message(std::string msg);
 
 // 1
@@ -194,12 +198,19 @@ int binary_search_helper(
 
 // 8
 template <typename T>
-bool greater_or_equal (T left, T right)
+bool greate_or_equal (T left, T right)
 {
     return left >= right ? true : false; 
 }
 
 // 9
+template <typename T>
+bool less_or_equal (T left, T right)
+{
+    return left <= right ? true : false; 
+}
+
+// 10
 template <typename T>
 void swap(T& left, T& right)
 {
@@ -208,14 +219,14 @@ void swap(T& left, T& right)
     right = buff;
 }
 
-// 10
+// 11
 unsigned int microseconds  = 100000;
 void sleep(int seconds)
 {
     usleep(seconds * microseconds);
 }
 
-// 11
+// 12
 void space(size_t how_many)
 {
     for (size_t i = 0; i < how_many; ++i) {
@@ -223,7 +234,7 @@ void space(size_t how_many)
     }
 }
 
-// 12
+// 13
 void message(std::string msg)
 {
     std::cout << msg << std::endl;
