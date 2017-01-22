@@ -49,12 +49,13 @@ class List
 public:
     List();
     ~List();
-    void pushFront(T value);
+    void pushFront(const T& value);
     void removeFront();
-    void pushBack(T value);
+    void pushBack(const T& value);
     void removeBack();
-    ListNode<T>* insertAfter(T value, ListNode<T>* pos);
-    ListNode<T>* insertBefore(T value, ListNode<T>* pos);
+    ListNode<T>* insertAfter(const T& value, ListNode<T>* pos);
+    ListNode<T>* insertBefore(const T& value, ListNode<T>* pos);
+    void erase(ListNode<T>* pos);
     const ListNode<T>* find(T value) const;
     ListNode<T>* find(T value);
     size_t size() const;
@@ -87,7 +88,7 @@ List<T>::~List()
 }
 
 template <typename T>
-void List<T>::pushFront(T value)
+void List<T>::pushFront(const T& value)
 {
     ListNode<T>* node = new ListNode<T>();
     node->m_value = value;
@@ -118,7 +119,7 @@ void List<T>::removeFront()
 }
 
 template <typename T>
-void List<T>::pushBack(T value)
+void List<T>::pushBack(const T& value)
 {
     ListNode<T>* node = new ListNode<T>();
     node->m_value = value;
@@ -149,7 +150,7 @@ void List<T>::removeBack()
 }
 
 template <typename T>
-ListNode<T>* List<T>::insertAfter(T value, ListNode<T>* pos)
+ListNode<T>* List<T>::insertAfter(const T& value, ListNode<T>* pos)
 {
     assert(0 != pos);
     assert(0 != size());
@@ -163,12 +164,52 @@ ListNode<T>* List<T>::insertAfter(T value, ListNode<T>* pos)
         node->next = pos->next;
         pos->next->prev = node;
         pos->next = node;
-        // TODO
-        // pos->prev (make connections)
 
         ++m_size;
     }
     return node;
+}
+
+template <typename T>
+ListNode<T>* List<T>::insertBefore(const T& value, ListNode<T>* pos)
+{
+    assert(0 != pos);
+    assert(0 != size());
+
+    ListNode<T>* node = new ListNode<T>();
+    node->m_value = value;
+    if (0 == pos->prev) {
+        pushFront(value);
+    } else {
+        node->next = pos;
+        node->prev = pos->prev;
+        pos->prev->next = node;
+        pos->prev = node;
+
+        ++m_size;
+    }
+
+    return node;
+}
+
+template <typename T>
+void List<T>::erase(ListNode<T>* pos)
+{
+    assert(0 != pos);
+
+    if (0 == size()) {
+        return;
+    }
+    if (0 == pos->prev) {
+        removeFront();
+    } else if (0 == pos->next) {
+        removeBack();
+    } else {
+        pos->prev->next = pos->next;
+        pos->next->prev = pos->prev;
+        delete pos;
+        --m_size;
+    }
 }
 
 template <typename T>
