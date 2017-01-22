@@ -2,8 +2,8 @@
 #define STATIC_QUEUE_H
 
 #include <iostream>
-#include <cassert>
 #include <climits>
+#include <cassert>
 
 namespace myLib
 {

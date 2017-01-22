@@ -15,6 +15,8 @@ class ListNode
     friend class List;
 public:
     ListNode();
+    void setValue(T value);
+    T getValue() const;
 private:
     T m_value;
     ListNode<T>* next;
@@ -30,6 +32,18 @@ ListNode<T>::ListNode()
 }
 
 template <typename T>
+void ListNode<T>::setValue(T value)
+{
+    m_value = value;
+}
+
+template <typename T>
+T ListNode<T>::getValue() const
+{
+    return m_value;
+}
+
+template <typename T>
 class List
 {
 public:
@@ -39,9 +53,14 @@ public:
     void removeFront();
     void pushBack(T value);
     void removeBack();
+    ListNode<T>* insertAfter(T value, ListNode<T>* pos);
+    ListNode<T>* insertBefore(T value, ListNode<T>* pos);
+    const ListNode<T>* find(T value) const;
+    ListNode<T>* find(T value);
     size_t size() const;
     bool empty() const ;
     void print() const;
+    void rPrint() const;
 private:
     ListNode<T> * m_head;
     ListNode<T> * m_tail;
@@ -130,6 +149,55 @@ void List<T>::removeBack()
 }
 
 template <typename T>
+ListNode<T>* List<T>::insertAfter(T value, ListNode<T>* pos)
+{
+    assert(0 != pos);
+    assert(0 != size());
+
+    ListNode<T>* node = new ListNode<T>();
+    node->m_value = value;
+    if (0 == pos->next) {
+        pushBack(value);
+    } else {
+        node->prev = pos;
+        node->next = pos->next;
+        pos->next->prev = node;
+        pos->next = node;
+        // TODO
+        // pos->prev (make connections)
+
+        ++m_size;
+    }
+    return node;
+}
+
+template <typename T>
+const ListNode<T>* List<T>::find(T value) const
+{
+    ListNode<T>* start = m_head;
+    while(start) {
+        if (start->m_value == value) {
+            return start;
+        }
+        start = start->next;
+    }
+    return 0;
+}
+
+template <typename T>
+ListNode<T>* List<T>::find(T value)
+{
+    ListNode<T>* start = m_head;
+    while(start) {
+        if (start->m_value == value) {
+            return start;
+        }
+        start = start->next;
+    }
+    return 0;
+}
+
+template <typename T>
 size_t List<T>::size() const
 {
     return m_size;
@@ -148,6 +216,17 @@ void List<T>::print() const
     while(start) {
         std::cout << start->m_value << " ";
         start = start->next;
+    }
+    std::cout << std::endl;
+}
+
+template <typename T>
+void List<T>::rPrint() const
+{
+    ListNode<T>* start = m_tail;
+    while(start) {
+        std::cout << start->m_value << " ";
+        start = start->prev;
     }
     std::cout << std::endl;
 }
